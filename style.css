@@ -1,0 +1,43 @@
+/* Contoh container utama */
+.parent-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; /* Agar tinggi kolom tidak saling memaksa sama rata */
+}
+.class-dropdown-periode { /* Ganti dengan class dropdown periode kamu */
+  position: absolute;
+  z-index: 99999; /* Bikin angkanya paling tinggi supaya nembus ke depan */
+}
+.header-actions {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+}
+
+.period-dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 99999;
+}
+
+.period-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: 99999;
+    min-width: 290px;
+    max-width: min(90vw, 320px);
+    max-height: 360px;
+    padding: 10px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    box-shadow: 0 14px 36px rgba(22, 22, 21, .12);
+    overflow: visible;
+    overflow-y: auto;
+    display: none;
+}
+
+.period-dropdown.open .period-dropdown-menu {
+    display: block;
+}

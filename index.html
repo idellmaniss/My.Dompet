@@ -6,16 +6,16 @@
 	<title>My.Dompet</title>
 	<style>
 		:root {
-			--background: #f7f3ec;
-			--surface: #faf7f0;
-			--secondary: #ede7d8;
-			--text: #2a2a28;
-			--muted: #81786d;
-			--border: #2a2a28;
-			--primary: #2a2a28;
-			--primary-dark: #161615;
-			--income: #3b6d11;
-			--expense: #993c1d;
+			--background: #eef1f5;
+			--surface: #f7f9fc;
+			--secondary: #e2e7ee;
+			--text: #1c2430;
+			--muted: #6b7684;
+			--border: #1c2430;
+			--primary: #1c2430;
+			--primary-dark: #0d1219;
+			--income: #1f7a5c;
+			--expense: #b8402f;
 		}
 
 		* { box-sizing: border-box; }
@@ -37,6 +37,13 @@
 			color: var(--text);
 			font-family: "Segoe UI", Tahoma, sans-serif;
 		}
+		body.auth-page {
+			display: grid;
+			min-height: 100vh;
+			padding: 32px 0;
+			place-items: center;
+			background-image: radial-gradient(ellipse at 16% 14%, rgba(31, 122, 92, .08), transparent 34%), radial-gradient(ellipse at 88% 86%, rgba(28, 36, 48, .07), transparent 36%);
+		}
 		body::before,
 		body::after {
 			position: fixed;
@@ -48,6 +55,8 @@
 			display: none;
 			pointer-events: none;
 		}
+		body.auth-page::before,
+		body.auth-page::after { display: block; opacity: .22; }
 		body::before {
 			top: -90px;
 			right: 12%;
@@ -69,12 +78,37 @@
 		.header-actions { display: flex; align-items: center; gap: 10px; }
 		.logout-button { min-height: 42px; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); cursor: pointer; font-size: .86rem; font-weight: 700; }
 		.logout-button:hover { background: var(--secondary); }
-		.auth-panel { width: min(440px, 100%); margin: 12vh auto 0; padding: 28px; }
-		.auth-panel h1 { margin-bottom: 8px; }
+		.auth-panel { display: grid; grid-template-columns: .92fr 1.08fr; width: min(900px, calc(100% - 32px)); margin: 0 auto; padding: 0; overflow: hidden; box-shadow: 0 24px 70px rgba(28, 36, 48, .12); }
+		.auth-panel:hover { background: var(--surface); transform: none; }
+		.auth-brand { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 580px; padding: 38px; overflow: hidden; background: var(--text); color: var(--surface); }
+		.auth-brand::after { position: absolute; right: -90px; bottom: -120px; width: 300px; height: 300px; border: 1px solid rgba(247, 249, 252, .12); border-radius: 50%; box-shadow: 0 0 0 30px rgba(247, 249, 252, .035), 0 0 0 64px rgba(247, 249, 252, .025); content: ""; pointer-events: none; }
+		.auth-brand-top, .auth-brand-bottom { position: relative; z-index: 1; }
+		.auth-logo { display: inline-flex; align-items: center; gap: 10px; color: var(--surface); font-weight: 700; letter-spacing: -.02em; }
+		.auth-logo-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(247, 249, 252, .3); border-radius: 12px; background: rgba(247, 249, 252, .1); }
+		.auth-logo-mark svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+		.auth-brand .eyebrow { margin-top: 48px; color: #b7c1ce; letter-spacing: .11em; text-transform: uppercase; }
+		.auth-brand h2 { max-width: 340px; margin: 0 0 14px; color: var(--surface); font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 3.4vw, 2.65rem); font-weight: 600; line-height: 1.12; }
+		.auth-panel .auth-brand-copy { max-width: 310px; margin: 0; color: #c1cad5; font-size: .96rem; line-height: 1.65; }
+		.auth-brand-art { display: block; width: min(100%, 300px); height: auto; margin: 32px 0 0 auto; color: var(--surface); }
+		.auth-brand-art .art-card { fill: rgba(247, 249, 252, .08); stroke: rgba(247, 249, 252, .22); }
+		.auth-brand-art .art-line { fill: none; stroke: #1f7a5c; stroke-linecap: round; stroke-linejoin: round; stroke-width: 3; }
+		.auth-brand-art .art-muted { fill: none; stroke: rgba(247, 249, 252, .36); stroke-linecap: round; stroke-width: 2; }
+		.auth-brand-art .art-dot { fill: #1f7a5c; }
+		.auth-content { align-self: center; width: 100%; max-width: 480px; margin: 0 auto; padding: 44px clamp(28px, 5vw, 56px); }
+		.auth-content .eyebrow { margin-bottom: 8px; color: var(--income); }
+		.auth-panel h1 { margin-bottom: 8px; font-size: clamp(1.8rem, 3vw, 2.1rem); }
 		.auth-panel p { color: var(--muted); line-height: 1.5; }
 		.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 22px 0; padding: 4px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--secondary); }
-		.auth-tabs button { padding: 10px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 700; }
+		.auth-tabs button { min-height: 42px; padding: 10px; border: 1px solid transparent; border-radius: 9px; background: transparent; color: var(--muted); cursor: pointer; font-weight: 700; transition: background .2s, color .2s, border-color .2s; }
+		.auth-tabs button:hover { color: var(--text); }
 		.auth-tabs button.active { border-color: var(--border); background: var(--surface); color: var(--text); }
+		.auth-tabs button:focus-visible, .forgot-password:focus-visible, .auth-panel button:focus-visible { outline: 3px solid rgba(31, 122, 92, .32); outline-offset: 2px; }
+		.auth-content .form-group label { color: #3e4a5c; }
+		.auth-content input { background: #fff; }
+		.auth-content input:focus { border-color: var(--income); background: #fff; box-shadow: 0 0 0 3px rgba(31, 122, 92, .12); }
+		.auth-content .submit-button { margin-top: 4px; }
+		.auth-content .submit-button:hover { background: var(--income); }
+		.auth-content .submit-button:disabled { cursor: wait; opacity: .7; transform: none; }
 		.auth-message { min-height: 22px; margin: 14px 0 0; color: var(--expense) !important; font-size: .86rem; }
 		.auth-message.success { color: var(--income) !important; }
 		.forgot-password { display: inline-block; margin-top: 12px; color: var(--muted); font-size: .82rem; text-decoration: underline; }
@@ -183,18 +217,33 @@
 		@media (prefers-reduced-motion: reduce) {
 			*, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 		}
-		.toast { position: fixed; right: 20px; bottom: 20px; display: none; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--text); color: #faf7f0; font-size: .9rem; }
+		.toast { position: fixed; right: 20px; bottom: 20px; display: none; max-width: calc(100vw - 40px); overflow-wrap: anywhere; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--text); color: #faf7f0; font-size: .9rem; }
 		.toast.show { display: block; }
 		@media (max-width: 900px) {
-			.content-grid { grid-template-columns: 1fr; }
+			.summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+			.summary-card.primary { grid-column: 1 / -1; }
+			.content-grid { grid-template-columns: minmax(280px, .9fr) minmax(0, 1.3fr); gap: 16px; }
+			.transaction-item { flex-direction: column; align-items: stretch; gap: 10px; }
+			.transaction-main, .transaction-right { width: 100%; }
+			.transaction-right { min-width: 0; justify-content: flex-start; flex-wrap: wrap; gap: 8px; }
 		}
 		@media (max-width: 760px) {
+			body.auth-page { padding: 24px 0; }
+			.auth-panel { grid-template-columns: 1fr; width: min(560px, calc(100% - 24px)); }
+			.auth-brand { min-height: 0; padding: 28px; }
+			.auth-brand .eyebrow { margin-top: 30px; }
+			.auth-brand h2 { max-width: 420px; font-size: 2rem; }
+			.auth-brand-art { position: relative; right: auto; bottom: auto; width: min(100%, 190px); margin: 18px 0 0 auto; opacity: .72; }
+			.auth-brand-bottom { max-width: 100%; }
+			.auth-content { max-width: none; padding: 32px 28px; }
 			.page-shell { width: min(100% - 24px, 600px); padding-top: 28px; }
 			.hero { display: block; }
 			.header-actions { align-items: flex-start; margin-top: 18px; }
 			.date-badge { display: inline-block; margin-top: 0; }
-			.summary-grid { grid-template-columns: 1fr; gap: 12px; }
-			.content-grid { gap: 16px; }
+			.summary-grid { gap: 12px; }
+			.summary-card.primary { grid-column: 1 / -1; }
+			.amount { font-size: clamp(1.35rem, 3.8vw, 1.85rem); }
+			.content-grid { grid-template-columns: 1fr; gap: 16px; }
 			.panel { padding: 20px; }
 			.history-controls { grid-template-columns: 1fr; }
 			.chart-panel { margin-bottom: 16px; padding: 20px; }
@@ -202,16 +251,26 @@
 			.chart-legend { margin-top: 14px; }
 		}
 		@media (max-width: 480px) {
+			body.auth-page { padding: 14px 0; }
+			.auth-panel { width: calc(100% - 20px); }
+			.auth-brand { padding: 22px; }
+			.auth-brand .eyebrow { margin-top: 24px; }
+			.auth-brand h2 { max-width: 290px; font-size: 1.8rem; }
+			.auth-brand-copy { font-size: .9rem; }
+			.auth-brand-art { width: min(100%, 150px); margin-top: 14px; opacity: .62; }
+			.auth-content { padding: 28px 22px; }
 			.page-shell { width: calc(100% - 20px); padding: 22px 0 36px; }
 			h1 { font-size: clamp(1.8rem, 9vw, 2.35rem); }
 			.subtitle { font-size: .92rem; }
 			.summary-card { min-height: 132px; padding: 20px; }
+			.summary-grid { grid-template-columns: 1fr; }
+			.summary-card.primary { grid-column: auto; }
 			.panel { padding: 18px; }
 			.chart-panel { padding: 18px; }
 			.chart-wrapper { height: 220px; }
 			.transaction-item { align-items: flex-start; flex-wrap: wrap; gap: 12px; }
 			.transaction-main { width: 100%; }
-			.transaction-right { width: 100%; justify-content: space-between; padding-left: 52px; }
+			.transaction-right { width: 100%; justify-content: space-between; padding-left: 0; flex-wrap: wrap; gap: 8px; }
 			.transaction-note { max-width: 220px; }
 		}
 		@media (max-width: 360px) {
@@ -219,13 +278,38 @@
 			.panel { padding: 15px; }
 			.summary-card { padding: 18px; }
 			.amount { font-size: 1.45rem; }
-			.transaction-right { padding-left: 48px; }
+			.transaction-right { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; padding-left: 0; }
+			.transaction-amount { grid-column: 1 / -1; }
+			#resetPasswordForm .form-actions { gap: 6px; }
+			#resetPasswordForm .form-actions .submit-button,
+			#resetPasswordForm .form-actions .cancel-button { min-width: 0; padding-right: 6px; padding-left: 6px; font-size: .75rem; white-space: nowrap; }
 		}
 	</style>
 </head>
-<body>
+<body class="auth-page">
 	<section class="card auth-panel" id="authPanel">
-		<p class="eyebrow">My.Dompet</p>
+		<aside class="auth-brand" aria-label="Tentang My.Dompet">
+			<div class="auth-brand-top">
+				<div class="auth-logo">
+					<span class="auth-logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7.5h14.5A1.5 1.5 0 0 1 20 9v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18V6.5A2.5 2.5 0 0 1 6.5 4H18"></path><path d="M20 11h-5a2 2 0 0 0 0 4h5"></path><path d="M15 13h.01"></path></svg></span>
+					<span>My.Dompet</span>
+				</div>
+			</div>
+			<div class="auth-brand-bottom">
+				<p class="eyebrow">Keuangan pribadi</p>
+				<h2>Perjalanan transaksi, tercatat disini.</h2>
+				<p class="auth-brand-copy">Catat pemasukan dan pengeluaranmu dalam satu tempat yang sederhana dan mudah dipahami.</p>
+				<svg class="auth-brand-art" viewBox="0 0 300 160" aria-hidden="true">
+					<rect class="art-card" x="1" y="1" width="298" height="158" rx="14"></rect>
+					<path class="art-muted" d="M24 33h64M24 45h39"></path>
+					<path class="art-muted" d="M25 128h250M25 102h250M25 76h250"></path>
+					<path class="art-line" d="m31 116 48-27 44 14 54-45 44 17 48-37"></path>
+					<circle class="art-dot" cx="269" cy="38" r="5"></circle>
+				</svg>
+			</div>
+		</aside>
+		<div class="auth-content">
+		<p class="eyebrow">Mulai kelola keuangan</p>
 		<h1 id="authTitle">Masuk ke akunmu</h1>
 		<p id="authDescription">Kelola transaksi keuangan pribadimu dengan aman.</p>
 		<div class="auth-tabs" role="tablist" aria-label="Autentikasi">
@@ -240,10 +324,10 @@
 		<a class="forgot-password" id="forgotPasswordLink" href="#">Lupa password?</a>
 		<form class="hidden" id="resetPasswordForm">
 			<div class="form-group"><label for="resetEmail">Email</label><input id="resetEmail" type="email" autocomplete="email" required placeholder="nama@email.com"></div>
-			<button class="submit-button" id="resetPasswordSubmit" type="submit">Kirim link reset</button>
-			<button class="cancel-button" id="backToLogin" type="button">Kembali ke Login</button>
+			<div class="form-actions"><button class="submit-button" id="resetPasswordSubmit" type="submit">Kirim link reset</button><button class="cancel-button" id="backToLogin" type="button">Kembali ke Login</button></div>
 		</form>
 		<p class="auth-message" id="authMessage" role="alert"></p>
+		</div>
 	</section>
 	<main class="page-shell hidden" id="dashboard">
 		<header class="hero">
@@ -597,6 +681,7 @@
 		}
 		async function showDashboard(user) {
 			currentUser = user;
+			document.body.classList.remove('auth-page');
 			authPanel.classList.add('hidden');
 			dashboard.classList.remove('hidden');
 			document.getElementById('currentDate').textContent = new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
@@ -616,6 +701,7 @@
 			if (financeChart) { financeChart.destroy(); financeChart = null; }
 			dashboard.classList.add('hidden');
 			authPanel.classList.remove('hidden');
+			document.body.classList.add('auth-page');
 		}
 		document.getElementById('loginTab').addEventListener('click', () => setAuthMode(false));
 		document.getElementById('registerTab').addEventListener('click', () => setAuthMode(true));
@@ -640,7 +726,7 @@
 			const password = document.getElementById('authPassword').value;
 			try {
 				const result = isRegisterMode
-					? await supabaseClient.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/catatan-idel.html` } })
+					? await supabaseClient.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/catatan-idel.html.html` } })
 					: await supabaseClient.auth.signInWithPassword({ email, password });
 				if (result.error) throw result.error;
 				if (isRegisterMode) {
@@ -649,7 +735,7 @@
 					authMessage.textContent = 'Registrasi berhasil. Silakan login.';
 					authForm.reset();
 				} else if (result.data.user) {
-					window.location.href = 'catatan-idel.html';
+					window.location.href = 'catatan-idel.html.html';
 				}
 			} catch (error) {
 				authMessage.textContent = getAuthErrorMessage(error);
@@ -663,7 +749,7 @@
 			authMessage.classList.remove('success');
 			resetPasswordSubmit.disabled = true;
 			try {
-				const { error } = await supabaseClient.auth.resetPasswordForEmail(resetEmail.value.trim(), { redirectTo: window.location.origin + '/catatan-idel.html' });
+				const { error } = await supabaseClient.auth.resetPasswordForEmail(resetEmail.value.trim(), { redirectTo: window.location.origin + '/catatan-idel.html.html' });
 				if (error) throw error;
 				authMessage.textContent = 'Link reset password sudah dikirim ke email kamu, silakan cek inbox';
 				authMessage.classList.add('success');
@@ -684,7 +770,7 @@
 		(async function initializeApp() {
 			const { data: { session }, error } = await supabaseClient.auth.getSession();
 			if (error) { authMessage.textContent = error.message; return; }
-			if (session?.user) window.location.href = 'catatan-idel.html';
+			if (session?.user) window.location.href = 'catatan-idel.html.html';
 		})();
 	</script>
 </body>
